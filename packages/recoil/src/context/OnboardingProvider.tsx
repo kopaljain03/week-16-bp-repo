@@ -23,6 +23,7 @@ import {
   UI_RPC_METHOD_KEYRING_STORE_CREATE,
   UI_RPC_METHOD_USERNAME_ACCOUNT_CREATE,
 } from "@coral-xyz/common";
+import { first } from "cheerio/lib/api/traversing";
 
 import { useBackgroundClient } from "../hooks/client";
 import { useAuthentication } from "../hooks/useAuthentication";
@@ -81,6 +82,8 @@ export type OnboardingData = {
   complete: boolean;
   inviteCode: string | undefined;
   username: string | null;
+  firstname: string | null;
+  lastname: string | null;
   action: string;
   keyringType: KeyringType | null;
   blockchain: Blockchain | null;
@@ -102,6 +105,8 @@ const defaultState = {
   complete: false,
   inviteCode: undefined,
   username: null,
+  firstname: null,
+  lastname: null,
   action: "create",
   keyringType: null,
   blockchain: null,
@@ -278,7 +283,8 @@ export function OnboardingProvider({
   //
   const createUser = useCallback(
     async (data: Partial<OnboardingData>) => {
-      const { inviteCode, userId, username, keyringType } = data;
+      const { inviteCode, userId, username, firstname, lastname, keyringType } =
+        data;
 
       // If userId is provided, then we are onboarding via the recover flow.
       if (userId) {
@@ -312,6 +318,8 @@ export function OnboardingProvider({
       //
       const body = JSON.stringify({
         username,
+        firstname,
+        lastname,
         inviteCode,
         waitlistId: getWaitlistId?.(),
         blockchainPublicKeys,

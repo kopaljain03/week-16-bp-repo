@@ -7,7 +7,7 @@ import { Typography } from "@mui/material";
 
 import { useDrawerContext } from "../../common/Layout/Drawer";
 
-const STRIP_RAMP_URL = "https://auth.xnfts.dev";
+const STRIP_RAMP_URL = "http://localhost:8080/";
 
 const useStyles = styles((theme: CustomTheme) => ({
   outerContainer: {
@@ -81,18 +81,22 @@ export const StripeRamp = ({
   return (
     <div className={classes.outerContainer}>
       {" "}
-      {err ? <>
+      {err ? (
+        <>
+          <div className={classes.innerContainer}>
+            <Typography variant="subtitle1">{err}</Typography>
+          </div>
+          <br />
+          <div className={classes.innerContainerPad}>
+            <PrimaryButton label="Try again" onClick={() => fetchToken()} />
+          </div>
+        </>
+      ) : null}
+      {!err ? (
         <div className={classes.innerContainer}>
-          <Typography variant="subtitle1">{err}</Typography>
+          <Loading />{" "}
         </div>
-        <br />
-        <div className={classes.innerContainerPad}>
-          <PrimaryButton label="Try again" onClick={() => fetchToken()} />
-        </div>
-      </> : null}
-      {!err ? <div className={classes.innerContainer}>
-        <Loading />{" "}
-      </div> : null}
+      ) : null}
     </div>
   );
 };

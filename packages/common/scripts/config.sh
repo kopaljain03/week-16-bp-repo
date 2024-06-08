@@ -20,11 +20,11 @@
 
 set -euo pipefail
 
-out_file="./src/generated-config.ts"
+out_file="../src/generated-config.ts"
 
 main () {
-		if [ -f "./src/generated-config.ts" ]; then
-				rm ./src/generated-config.ts
+		if [ -f "../src/generated-config.ts" ]; then
+				rm ../src/generated-config.ts
 		fi
 
 		cat <<EOF >"$out_file"
